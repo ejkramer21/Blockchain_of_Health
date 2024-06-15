@@ -36,6 +36,6 @@ class Summarize:
                 self.summary+=" "+s["summary_text"]
         
     def splitText(self,data):
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=20, chunk_overlap=5)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=5)
         all_splits = text_splitter.split_documents(data)
         return all_splits
