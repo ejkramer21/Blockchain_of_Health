@@ -1,8 +1,7 @@
-import streamlit as st
 from langchain_community.document_loaders import TextLoader, PyPDFLoader, CSVLoader
-import os
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from transformers import pipeline
+import streamlit as st
 
 class Summarize:
     file=""
@@ -17,20 +16,14 @@ class Summarize:
     def getLoader(self):
         file_type = str(self.file).split('.')[1]
         file_type = file_type.split("'")[0]
-        st.markdown(file_type)
         loader = self.loaders[file_type]
         load = loader(str(self.file))
         data = load.load()
         return data
         
     def callRag(self):
-        st.markdown("Processing your file...")
         data = self.getLoader()
-        st.markdown("Data Loaded")
-        # for d in data:
-        #     st.markdown(d.page_content.split("\n"))
         splits = self.splitText(data)
-        st.markdown("Text Split")
         self.sum_splits(splits)
         st.markdown(self.summary)
         
@@ -46,15 +39,3 @@ class Summarize:
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=20, chunk_overlap=5)
         all_splits = text_splitter.split_documents(data)
         return all_splits
-        # return data.split("\n")
-    
-st.header("Blockchain of Health")
-# file = st.file_uploader("Upload your file securely")
-# if file:
-#     if not os.path.exists("tempDir/"):
-#         os.makedirs("tempDir/")
-#     dir="tempDir/"+file.name
-#     with open(dir,"wb") as f:
-#         f.write(file.getbuffer())
-sum = Summarize("C:/Users/erinj/Downloads/erin.pdf")
-sum.callRag()
