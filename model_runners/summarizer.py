@@ -1,7 +1,7 @@
 from langchain_community.document_loaders import TextLoader, PyPDFLoader, CSVLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from transformers import pipeline
-import streamlit as st
+# import streamlit as st
 
 class Summarize:
     file=""
@@ -25,7 +25,7 @@ class Summarize:
         data = self.getLoader()
         splits = self.splitText(data)
         self.sum_splits(splits)
-        st.markdown(self.summary)
+        return self.summary
         
     def sum_splits(self,splits):
         summarizer = pipeline("summarization", model="Falconsai/text_summarization")
@@ -36,6 +36,6 @@ class Summarize:
                 self.summary+=" "+s["summary_text"]
         
     def splitText(self,data):
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=5)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=50, chunk_overlap=0)
         all_splits = text_splitter.split_documents(data)
         return all_splits
