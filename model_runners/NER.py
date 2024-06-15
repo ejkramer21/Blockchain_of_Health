@@ -1,10 +1,7 @@
-import streamlit as st
-from summarizer import Summarize
-# from NER import NER
-
 import fitz  # PyMuPDF+
 from transformers import pipeline
 import hashlib
+import streamlit as st
 
 class NER:
     uploaded_file=""
@@ -15,10 +12,8 @@ class NER:
 
     # Function to extract text from PDF
     def extract_text_from_pdf(self, pdf_file):
-        doc = fitz.open(pdf_file)
-    
+        doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
         text = ""
-        # Iterate over each page and extract text
         for page_num in range(len(doc)):
             page = doc.load_page(page_num)
             text += page.get_text()
@@ -31,6 +26,9 @@ class NER:
         if self.uploaded_file is not None:
             # Extract text from the uploaded PDF
             pdf_text = self.extract_text_from_pdf(self.uploaded_file)
+
+            st.write("Extracted Text:")
+            st.write(pdf_text)
 
             # Run the NER model on the extracted text
             ner_output = self.ner_model(pdf_text)
@@ -106,23 +104,3 @@ class NER:
         highlighted_text += text[last_idx:]
 
         return css + highlighted_text
-
-
-st.markdown("<h1 style='text-align: center;'>Blockchain of Health</h1>",unsafe_allow_html=True)
-
-uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
-col1, spacer, col2 = st.columns([3, 1, 3])
-if uploaded_file is not None:
-    sum = Summarize(uploaded_file.name)
-    ner = NER(uploaded_file.name)
-    with col2:  
-        st.markdown("<h3> Summary of the document</h3>",unsafe_allow_html=True)
-        
-    with col1:
-        st.markdown("<h3>NER Model Output from PDF</h3>",unsafe_allow_html=True)
-        
-    with col1:
-        ner.run_NER()
-    with col2:
-        st.markdown(sum.callRag())
-    

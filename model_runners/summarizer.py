@@ -31,7 +31,7 @@ class Summarize:
         summarizer = pipeline("summarization", model="Falconsai/text_summarization")
         for split in splits:
             
-            sum = summarizer(split.page_content, max_length=10, min_length=1, do_sample=False)
+            sum = summarizer(split.page_content, max_length=5, min_length=1, do_sample=False)
             for s in sum:
                 self.summary+=" "+s["summary_text"]
         
