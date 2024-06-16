@@ -12,5 +12,3 @@ Python, NodeJS, Streamlit, HuggingFace, LangChain, RAG Pipelines, Web3 technolog
 ### To Run ###
 cd model_runners
 streamlit run frontend.py
-
-![BlockchainOfHealth](https://github.com/ejkramer21/Blockchain_of_Health/assets/89913159/7371b856-894d-44db-9270-b8da80773242)
