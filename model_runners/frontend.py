@@ -5,6 +5,41 @@ from summarizer import Summarize
 import fitz  # PyMuPDF+
 from transformers import pipeline
 import hashlib
+import json
+
+import subprocess
+
+def call_node_function():
+    try:
+        result = subprocess.run(
+            ['node', 'sdk.js'],  # Ensure this path is correct
+            capture_output=True,
+            text=True
+        )
+        
+        # Print detailed output for debugging
+        print(f"Arguments: {result.args}")
+        print(f"Return Code: {result.returncode}")
+        print(f"Standard Output:\n{result.stdout}")
+        print(f"Standard Error:\n{result.stderr}")
+
+        # Raise an exception if the process exited with a non-zero status
+        if result.returncode != 0:
+            raise Exception(f"Node.js script exited with error code {result.returncode}")
+        
+        # Process the output
+        output_lines = result.stdout.strip().split('\n')
+        # # The last line should be the JSON string of the transaction
+        # transaction_output = output_lines[-1]
+        
+        # # Convert the JSON string to a Python dictionary
+        # transaction_data = json.loads(transaction_output)
+        
+        return output_lines
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 
 class NER:
     uploaded_file=""
@@ -113,6 +148,7 @@ st.markdown("<h1 style='text-align: center;'>Blockchain of Health</h1>",unsafe_a
 uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
 col1, spacer, col2 = st.columns([3, 1, 3])
 if uploaded_file is not None:
+    print(call_node_function())
     sum = Summarize(uploaded_file.name)
     ner = NER(uploaded_file.name)
     with col2:  
