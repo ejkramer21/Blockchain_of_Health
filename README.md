@@ -12,3 +12,6 @@ Python, NodeJS, Streamlit, HuggingFace, LangChain, RAG Pipelines, Web3 technolog
 ### To Run ###
 cd model_runners
 streamlit run frontend.py
+
+#### Important Note ####
+frontend.py contains a call to a NodeJS file called sdk.js. This file contains private information and is not pushed to this repository. To duplicate our results, you must develop and attach your own NodeJS SDK file to connect the file uploading to a Web3 storage database.
